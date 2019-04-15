@@ -1,0 +1,93 @@
+<html>
+<head>
+  <title>Map 3</title>
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/slick.css">
+  <link rel="stylesheet" href="css/slick-theme.css">
+  <link rel="stylesheet" href="css/owl.carousel.css">
+  <link rel="stylesheet" href="css/owl.theme.default.css">
+  <link rel="stylesheet" href="css/fontawesome.all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+
+<style>
+  #map path:hover { fill: cornflowerblue; }
+  #map rect:hover {fill: transparent;}
+</style>
+
+<section class="worldMap">
+  <div class="container">
+      <div class="row">
+
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">الرئيسية </li>
+                    <li class="breadcrumb-item">مصر </li>
+                    <li class="breadcrumb-item active">العلاقات الخارجية</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-12">
+            <h2>العلاقات الخارجية</h2>
+        </div>
+
+       <div class="col-12">
+          <div class="googleMap">
+    
+          <div id="map"></div>
+          
+          <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                اختر البلد
+                <i class="fas fa-chevron-down"></i>
+            </a>
+
+            <button class="btn goToCountry" style="position: absolute; 
+            top: 0;
+            left: 0;
+            background-color: #227194;
+            color:#fff;
+            display: none;
+            border-right: 1px solid #fff;
+            border-radius: 5px 0px 0px 0px;">
+                <i class="fas fa-chevron-left"></i>
+                اذهب
+            </button>
+            
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item">مصر</a>
+                <a class="dropdown-item">إيطاليا</a>
+                <a class="dropdown-item">غينيا</a>
+            </div>
+          </div>
+        </div>
+      </div>
+          
+      </div>
+  </div>
+</section>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/slick.min.js"></script>
+  <script src="js/owl.carousel.js"></script> 
+  <!-- <script src='http://www.google.com/jsapi'></script> -->
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  
+  <script src="mine.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndFqevHboVWDN156vJqXk1Y1-D7QR7BE&callback=initMap&libraries=geometry"></script>
+
+
+</body>
+</html> 
+

@@ -1,0 +1,82 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using ContentModels = Umbraco.Web.PublishedContentModels
+@using Newtonsoft.Json
+@using TD.POE.Website.Managers
+@using TD.POE.Website.Models
+@{
+    var x3 = "";
+    var provinces = Model.Content.Children.
+        Select(x =>
+            new TD.POE.Website.Models.Province()
+            {
+                Title = x.GetProperty("title").DataValue.ToString(),
+                Brief = x.GetProperty("brief").DataValue.ToString(),
+                Lat = x.GetProperty("lat").DataValue.ToString(),
+                Lng = x.GetProperty("lng").DataValue.ToString(),
+                Logo = MediaParseHelper.ParseImage(x.GetProperty("logo").DataValue.ToString()).CropRatio16x9,
+                Capital = x.GetProperty("capital").DataValue.ToString(),
+                Area = x.GetProperty("area").DataValue.ToString(),
+                TelephoneCode = x.GetProperty("telephoneCode").DataValue.ToString(),
+                SiteLink = x.GetProperty("siteLink").DataValue.ToString(),
+                FacebookLink = x.GetProperty("facebookLink").DataValue.ToString(),
+                TwitterLink = x.GetProperty("twitterLink").DataValue.ToString(),
+
+            }).ToList();
+}
+
+<section class="provinces generic-custom-page">
+    <div class="breadcrumb-container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                @Html.Partial("~/Views/MacroPartials/breadcrumbPartialView.cshtml")
+            </ol>
+        </nav>
+
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="separated-header">
+                    <h1 class="subtitle fancy">
+                        <span>@CommonHelper.ChangeEnglishLetters(Umbraco.AssignedContentItem.GetPropertyValue("pageTitle").ToString())</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    <img id="map-borders" src="~/Content/images/Map Vector.svg" @*style="background:rgb(255, 0, 0, .4)"*@ />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="social-container">
+                    @*@Html.Partial("~/Views/Partials/audio sound.cshtml", ViewData)*@
+
+                    @{
+                        ViewData["CurrentPage"] = Model.Content.Id;
+                    }
+                    @Html.Partial("~/Views/MacroPartials/SocialMediaSharing.cshtml", ViewData)
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+    var provinces = '@Html.Raw(ProvincesStringfyHelper.StringfyProvinces(provinces))';//.Replace("\\", "\\\\").Replace("'", "\\\'")
+    provinces = provinces.replace(/<br>\s*'\s*<br>/g, "&sbquo;").replace(/<br>\s*"\s*<br>/g, '&bdquo;')
+    //provinces = provinces.replace(/<br>/g, '');
+    var provincesList = JSON.parse(provinces);
+    var areaLabel = '@Umbraco.CultureDictionary["areaLabel"]';
+    var telephoneCodeLabel = '@Umbraco.CultureDictionary["telephoneCodeLabel"]';
+    var capitalLabel = '@Umbraco.CultureDictionary["capitalLabel"]';
+    var siteLabel = '@Umbraco.CultureDictionary["siteLabel"]';
+    var areaSuffix = '@Umbraco.CultureDictionary["areaSuffix"]';
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAklfCfOvveoqku0Yfo9ExQZDhpUPVkn_U&callback=initMap"
+        async defer></script>
+<script src="~/Content/js/provincesMap.js"></script>
