@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Map 3</title>
+  <title>Map 2</title>
 
   <link rel="stylesheet" href="css/bootstrap.min.css">  
   <link rel="stylesheet" href="style.css">
@@ -17,60 +17,41 @@
 
 <body>
 
-<style>
-  #map path:hover { fill: cornflowerblue; }
-  #map rect:hover {fill: transparent;}
-</style>
-
 <section class="worldMap">
   <div class="container">
       <div class="row">
 
         <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">الرئيسية </li>
-                    <li class="breadcrumb-item">مصر </li>
-                    <li class="breadcrumb-item active">العلاقات الخارجية</li>
-                </ol>
-            </nav>
-        </div>
 
-        <div class="col-12">
-            <h2>العلاقات الخارجية</h2>
-        </div>
-
-       <div class="col-12">
-          <div class="googleMap">
-    
-          <div id="map"></div>
-          
-          <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                اختر البلد
-                <i class="fas fa-chevron-down"></i>
-            </a>
-
-            <button class="btn goToCountry" style="position: absolute; 
-            top: 0;
-            left: 0;
-            background-color: #227194;
-            color:#fff;
-            display: none;
-            border-right: 1px solid #fff;
-            border-radius: 5px 0px 0px 0px;">
-                <i class="fas fa-chevron-left"></i>
-                اذهب
-            </button>
-            
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item">مصر</a>
-                <a class="dropdown-item">إيطاليا</a>
-                <a class="dropdown-item">غينيا</a>
+          <!-- <div class="popup-window">
+            <div>
+              <img src="Assets/Images/SVGs/address.svg" alt="address">
+              <p>العنوان</p>
             </div>
+            <div>
+              <p>شارع الاستاد البحرى - مدينة نصر- القاهرة - جمهورية مصرالعربية</p>
+            </div>
+            <div>
+              <img src="Assets/Images/SVGs/phone.svg" alt="address">
+              <p>تليفون</p>
+            </div>
+            <div>
+              <p>01111222233</p>
+            </div>
+            <div>
+              <img src="Assets/Images/SVGs/email.svg" alt="address">
+              <p>البريد اللإلكتروني</p>
+            </div>
+            <div>
+              <p class="email">feedback@sis.gov.eg</p>
+            </div>
+          </div> -->
+
+          <div class="googleMap">
+            <div id="mapBranches"></div>
+            <img id="map-borders" src="Assets/Images/SVGs/MapVector.svg"/>
           </div>
         </div>
-      </div>
           
       </div>
   </div>
@@ -81,12 +62,9 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/slick.min.js"></script>
   <script src="js/owl.carousel.js"></script> 
-  <!-- <script src='http://www.google.com/jsapi'></script> -->
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
   
   <script src="mine.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndFqevHboVWDN156vJqXk1Y1-D7QR7BE&callback=initMap&libraries=geometry"></script>
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAklfCfOvveoqku0Yfo9ExQZDhpUPVkn_U&callback=initialize&libraries=geometry"></script>
 
 </body>
 </html> 
