@@ -1,16 +1,10 @@
 <html>
 <head>
-  <title>Map 2</title>
+  <title>world-map-google-api</title>
 
   <link rel="stylesheet" href="css/bootstrap.min.css">  
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/slick.css">
-  <link rel="stylesheet" href="css/slick-theme.css">
-  <link rel="stylesheet" href="css/owl.carousel.css">
-  <link rel="stylesheet" href="css/owl.theme.default.css">
-  <link rel="stylesheet" href="css/fontawesome.all.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-  
+  <link rel="stylesheet" href="css/fontawesome.all.min.css">  
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
@@ -21,37 +15,28 @@
   <div class="container">
       <div class="row">
 
-        <div class="col-12">
-
-          <!-- <div class="popup-window">
-            <div>
-              <img src="Assets/Images/SVGs/address.svg" alt="address">
-              <p>العنوان</p>
-            </div>
-            <div>
-              <p>شارع الاستاد البحرى - مدينة نصر- القاهرة - جمهورية مصرالعربية</p>
-            </div>
-            <div>
-              <img src="Assets/Images/SVGs/phone.svg" alt="address">
-              <p>تليفون</p>
-            </div>
-            <div>
-              <p>01111222233</p>
-            </div>
-            <div>
-              <img src="Assets/Images/SVGs/email.svg" alt="address">
-              <p>البريد اللإلكتروني</p>
-            </div>
-            <div>
-              <p class="email">feedback@sis.gov.eg</p>
-            </div>
-          </div> -->
-
+       <div class="col-12">
           <div class="googleMap">
-            <div id="mapBranches"></div>
-            <img id="map-borders" src="Assets/Images/SVGs/MapVector.svg"/>
+    
+          <div id="map"></div>
+        
+          <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-chevron-down"></i>
+              اختر البلد
+            </a>
+            <button onclick="goToCountry()" class="btn goToCountry">
+              <i class="fas fa-chevron-left"></i>
+              اذهب
+            </button>
+
+            <div class="dropdown-menu">
+                <a class="dropdown-item CountryMark">Egypt</a>
+                <a class="dropdown-item CountryMark1">United States</a>
+            </div>
           </div>
         </div>
+      </div>
           
       </div>
   </div>
@@ -60,8 +45,6 @@
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/slick.min.js"></script>
-  <script src="js/owl.carousel.js"></script> 
   
   <script src="mine.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAklfCfOvveoqku0Yfo9ExQZDhpUPVkn_U&callback=initialize&libraries=geometry"></script>

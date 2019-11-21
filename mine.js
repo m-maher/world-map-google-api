@@ -1,37 +1,17 @@
+
 var map
 
+var country
+
+var allCountries = []
+
+var currentCountry = {}
+
+var lastCountry = ''
+
+var countryMark
+
 var markers = []
-
-var svgBounds
-
-var overlaySVG
-
-var center = { lat: 26.8206, lng: 30.8025 }
-
-var contentString = '<div class="popup-window">'+
-            '<div>'+
-              '<img src="Assets/Images/SVGs/address.svg" alt="address">'+
-              '<p>العنوان</p>'+
-            '</div>'+
-            '<div>'+
-              '<p>شارع الاستاد البحرى - مدينة نصر- القاهرة - جمهورية مصرالعربية</p>'+
-            '</div>'+
-            '<div>'+
-              '<img src="Assets/Images/SVGs/phone.svg" alt="phone">'+
-              '<p>تليفون</p>'+
-            '</div>'+
-            '<div>'+
-              '<p>01111222233</p>'+
-              '<p>01111222233</p>'+
-            '</div>'+
-            '<div>'+
-              '<img src="Assets/Images/SVGs/email.svg" alt="email">'+
-              '<p>البريد اللإلكتروني</p>'+
-            '</div>'+
-            '<div>'+
-              '<p class="email">feedback@sis.gov.eg</p>'+
-            '</div>'+
-          '</div>'
 
 var customMapStyle = [
     {
@@ -51,7 +31,7 @@ var customMapStyle = [
                 "visibility": "off"
             },
             {
-                "color": '#cccccc'
+                "color": '#ffffff'
             }
         ]
     },
@@ -59,7 +39,7 @@ var customMapStyle = [
         "featureType": "landscape",
         "stylers": [
             {
-                "color": "#ffffff"
+                "color": "#abd5ff"
             }
         ]
     },
@@ -83,121 +63,120 @@ var customMapStyle = [
         "featureType": "water",
         "stylers": [
             {
-                "color": "#abd5ff"
+                "color": "#ffffff"
             }
         ]
     }
 ];
 
 function initialize() {
-    map = new google.maps.Map(document.getElementById('mapBranches'),{
+    var center = { lat: 26.8206, lng: 30.8025 }
+    map = new google.maps.Map(document.getElementById('map'),{
         center: center,
-        zoom: 6 ,
+        zoom: 3 ,
+        maxZoom: 5,
+        minZoom: 3,
         styles: customMapStyle,
         disableDefaultUI: true,
         gestureHandling: 'greedy'
     });
 
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
+    // Initialize JSONP request
+    var script = document.createElement('script');
+    var url = ['https://www.googleapis.com/fusiontables/v1/query?'];
+    url.push('sql=');
+    var query = 'SELECT name, kml_4326 FROM ' +
+        '1foc3xO9DyfSIF6ofvN0kp2bxSfSeKog5FbdWdQ';
+    var encodedQuery = encodeURIComponent(query);
+    url.push(encodedQuery);
+    url.push('&callback=drawMap');
+    url.push('&key=AIzaSyAm9yWCV7JPCTHCJut8whOjARd7pwROFDQ');
+    script.src = url.join('');
+    var body = document.getElementsByTagName('body')[0];
+    body.appendChild(script);
+}
 
-    var marker = new google.maps.Marker({
-        position: { lat: 30.0444, lng: 31.2357 } ,
-        map: map,
-        label:{
-            text: "Cairo",
-            color: "#006ab2",
-            fontSize: "15px",
-            fontWeight: "bold",
-            fontFamily: "Segoe UI"
-        },
-        icon:{
-            url: 'Assets/Images/SVGs/marker-icon-01.svg', // url
-            scaledSize: new google.maps.Size(15, 15), // scaled size
-            origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(7.5, 7.5), // anchor
-            labelOrigin: new google.maps.Point(0, 25)
+function drawMap(data) {
+    var rows = data['rows'];
+    for (var i in rows) {
+        if (rows[i][0] != 'Antarctica' ) {
+            var newCoordinates = [];
+            var geometries = rows[i][1]['geometries'];
+        if (geometries) {
+            for (var j in geometries) {
+                newCoordinates.push(constructNewCoordinates(geometries[j]));
+            }
+        } else {
+            newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
         }
 
-    })
+        country = new google.maps.Polygon({
+            paths: newCoordinates,
+            strokeColor: '#ffffff',
+            strokeOpacity: 1,
+            strokeWeight: 0.3,
+            fillColor: '#227194',
+            fillOpacity: 0,
+            name: rows[i][0]
+        });
 
-    marker.addListener('click', function() {
-        infowindow.open(map, marker);
-    });
+        allCountries.push(country);
 
-    map.addListener("click", function() {
-        infowindow.close();
-    });
-
-    var svgBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(21.27857550299368, 24.670040083025242),//southwest
-        new google.maps.LatLng(32.24677630593176, 37.61900981867757));//northeast
-
-    initOverlay(svgBounds);
-
+        geocoder = new google.maps.Geocoder();
+            
+        var flag = true; //hover flag
+        google.maps.event.addListener(country, 'mouseover', function() {
+            if(flag == true && $(this)[0].fillOpacity == 0) {
+                this.setOptions({fillOpacity: 0.99}); 
+            }else{
+                this.setOptions({fillOpacity: 1});
+            }   
+            flag = true;  
+        });
+        google.maps.event.addListener(country, 'mouseout', function() {
+            if(flag == true && ($(this)[0].fillOpacity == 0 || $(this)[0].fillOpacity == 0.99)){
+                this.setOptions({fillOpacity: 0});
+            }else{
+                $(this)[0].fillOpacity == 1
+            }
+            flag = true; 
+        });
+        google.maps.event.addListener(country, 'click', function() {
+            window.open('https://www.google.com.eg/maps','_blank');
+        });
+            country.setMap(map);     
+        }
+    }   
 }
 
-
-function initOverlay(svgBounds) {
-    SVGOverlay.prototype = new google.maps.OverlayView();
-    /** @constructor */
-    function SVGOverlay(bounds, image, map) {
-        // Initialize all properties.
-        this.bounds_ = bounds;
-        this.image_ = image;
-        this.map_ = map;
-        this.div_ = null;
-        this.setMap(map);
+function constructNewCoordinates(polygon) {
+    var newCoordinates = [];
+    var coordinates = polygon['coordinates'][0];
+    for (var i in coordinates) {
+        newCoordinates.push(
+            new google.maps.LatLng(coordinates[i][1], coordinates[i][0])
+        );
     }
-
-    SVGOverlay.prototype.onAdd = function () {
-        var div = document.createElement("div")
-        div.style.borderStyle = 'none';
-        div.style.borderWidth = '0px';
-        div.style.position = 'absolute';
-
-        // Load the inline svg element and attach it to the div.
-        var svg = this.image_;
-        svg.style.width = '100%';
-        svg.style.height = '100%';
-
-
-        div.appendChild(svg);
-        this.div_ = div;
-        // Add the element to the "overlayLayer" pane.
-        var panes = this.getPanes();
-        panes.overlayLayer.appendChild(div);
-    };
-
-    SVGOverlay.prototype.draw = function () {
-        // We use the south-west and north-east
-        // coordinates of the overlay to peg it to the correct position and size.
-        // To do this, we need to retrieve the projection from the overlay.
-        var overlayProjection = this.getProjection();
-
-        // Retrieve the south-west and north-east coordinates of this overlay
-        // in LatLngs and convert them to pixel coordinates.
-        // We'll use these coordinates to resize the div.
-        var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
-        var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
-
-        // Resize the image's div to fit the indicated dimensions.
-        var div = this.div_;
-        div.style.left = sw.x + 'px';
-        div.style.top = ne.y + 'px';
-        div.style.width = (ne.x - sw.x) + 'px';
-        div.style.height = (sw.y - ne.y) + 'px';
-    };
-
-
-    mySVG = document.getElementById('map-borders');
-
-    overlaySVG = new SVGOverlay(svgBounds, mySVG, map);
-
+    return newCoordinates;
 }
 
+$(".CountryMark").click(function () {
+    countryMark = $(".CountryMark").text();
+    $(".btn-secondary").text(countryMark);
+    getCountryByName(countryMark);
+    getCountry(countryMark);
+});
 
+$(".CountryMark1").click(function () {
+    countryMark = $(".CountryMark1").text();
+    $(".btn-secondary").text(countryMark);
+    getCountryByName(countryMark);
+    getCountry(countryMark)
+});
+
+$('.dropdown-item').on('click',function(){
+    $('.goToCountry').show()
+})
 
 function getCountry(address) {
 
@@ -207,13 +186,15 @@ function getCountry(address) {
 
             map.setCenter(results[0].geometry.location);
 
-            deleteMarkerAndColor()
- 
+            if(markers != null){
+                deleteMarkerAndColor()
+            }
+
             var marker = new google.maps.Marker({
-                position: center,
+                position: results[0].geometry.location,
                 map: map,
                 label:{
-                    text: "Egypt",
+                    text: address,
                     color: "#ffffff",
                     fontSize: "12px",
                     fontWeight: "bold",
@@ -229,6 +210,12 @@ function getCountry(address) {
             })
 
             markers.push(marker)
+        
+            country = currentCountry[0]
+
+            country.setOptions({
+                fillOpacity: 1
+            })
 
             country.setMap(map)
 
@@ -239,3 +226,72 @@ function getCountry(address) {
         }
     });    
 }
+
+function zoom() {
+    if(map.zoom == 4 || map.zoom == 5) {
+        map.setOptions({
+            zoom:3
+        });
+        setTimeout(function() {
+            map.setOptions({
+                zoom:4
+            });
+        },400);
+    }else if(map.zoom == 3 || map.zoom == 5) {
+        map.setOptions({
+            zoom:4
+        })
+    }
+}
+
+function setMarkerAndColor(map) {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+    }
+    country.setMap(map)
+}
+
+function deleteMarkerAndColor() {
+    setMarkerAndColor(null); 
+}
+
+function getCountryByName(name) {
+    currentCountry = allCountries.filter(country => country.name == name);
+}
+    
+function goToCountry() {
+    window.open('https://www.google.com.eg/maps','_blank');
+}
+
+// var address = "Egypt"
+
+// function hoverCountry() {
+
+//     geocoder.geocode( { 'address': address }, function(results, status) {
+
+//         if (status == 'OK') {
+
+//             map.setCenter(results[0].geometry.location);
+        
+//             country = currentCountry[0]
+
+//             country.setOptions({
+//                 fillOpacity: 1
+//             })
+
+//             country.setMap(map)
+    
+//             google.maps.event.addListener('mouseover', function() {
+//                 country.setOptions({
+//                     fillOpacity: 0.99
+//                 })
+//             });
+        
+//             google.maps.event.addListener('mouseout', function() {
+//                 country.setOptions({
+//                     fillOpacity: 0
+//                 })
+//             });
+//         }
+//     });
+// }

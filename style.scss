@@ -1,81 +1,110 @@
 
+
 $start: right;
 $end:left;
 
+
 .worldMap {
     height: auto;
-
-    .gm-style-iw + div  {
-        display: none !important;
-    }
-
-    img[src*="gstatic.com/"], img[src*="googleapis.com/"] {
-        max-width: none !important;
-    }
-
-    .gm-style-iw-c{
-        padding: 0;
-        top: 320px;
-        .gm-style-iw-d{
-            overflow: unset !important;
-        }
-    }
-
-    .popup-window {
-        width: 250px;
-        height: 257.5px;
-        border-radius: 5px;
-        -webkit-backdrop-filter: blur(30px);
-        backdrop-filter: blur(30px);
-        box-shadow: 3px 3px 8px 0 #807979;
-        background-color: #ffffff;
-        overflow: hidden;
-        & div:nth-child(odd){
-            background-color: #abd5ff; 
-            padding: 0px;
-            img{
-                float: $start;
-                margin-top: 9px;
-                margin-#{$start}: 9px;
-                width: 19px;
-            }
-            p{
-                color: #287197;;
-                text-align: $start;
-                padding: 8px 10px;
-                font-family: SegoeUI;
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom:0px;
-                margin-#{$start}: 24px;
-            }
-        }
-        & div:nth-child(even){
-            background-color: #ffffff;
-            padding: 0px;
-            p{
-                text-align: right;
-                padding: 8px 10px;
-                font-family: SegoeUI;
-                font-size: 16px;
-                margin-bottom:0px;
-            }
-            .email{
-                font-weight: bold;
-                text-decoration: underline;
-            }
-        }
-    }
 
     .googleMap {
         position: relative;
         margin: 35.6px 0px 60.3px 0px;
         width: 100%;
 
-        #mapBranches {
+        #map {
             border: 1px solid #707070;
             height: 634.1px;
             width: 100%;
+        }
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 12.7px;
+        #{$start}: 14.5px;
+        width: 255px;
+        z-index: 100;
+        .goToCountry {
+            position: absolute;
+            top: 0;
+            #{$end}: 0;
+            background-color: #227194;
+            color: #fff;
+            display: none;
+            // border-#{$start}: 1px solid #fff;
+            border-radius: 5px 0px 0px 0px;
+            padding: 5px 0px;
+            padding-#{$start}: 9px;
+            padding-#{$end}: 16px;
+            &:after{
+                content: '';
+                width: 1px;
+                height: 25px;
+                background-color: #fff;
+                position: absolute;
+                right: 0;
+            }
+
+            i {
+                position: absolute;
+                #{$end}: 4.9px;
+                top: 11.4px;
+                font-size: 11px;
+                margin-top: 3px;
+            }
+        }
+
+        .fa-chevron-down {
+            position: absolute;
+            top: 15px;
+            #{$end}: 12px;
+            font-size: 11px;
+        }
+
+        .btn-secondary:not(:disabled):not(.disabled) {
+            width: 255px;
+            background-color: #227194;
+            text-align: $start;
+            box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            position: relative;
+            padding: 4px 22.4px 7.9px 88.3px;
+        }
+
+        .btn.focus, .btn:focus, .btn.active {
+            box-shadow: unset !important;
+        }
+
+        .dropdown-toggle {
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .dropdown-menu {
+            width: 255px;
+            height: 247px;
+            margin: 0px;
+            border-radius: 0px 0px 5px 0px;
+            box-shadow: 3px 3px 8px 0 #807979;
+
+            .dropdown-item {
+                color: #227194;
+                text-align: $start;
+                font-weight: bold;
+                cursor: pointer;
+
+                &:hover {
+                    color: #227194;
+                }
+            }
+
+            .dropdown-item:hover {
+                background-color: #e1dede;
+            }
         }
     }
 }
@@ -85,6 +114,21 @@ $end:left;
         .googleMap {
             #map {
                 border-radius: 5px 5px 0px 0px;
+            }
+        }
+        .dropdown {
+            width: 100%;
+            top: 0;
+            #{$start}: 0;
+            margin: 0;
+            .btn-secondary:not(:disabled):not(.disabled) {
+                width: 100%;
+                top: 0;
+                #{$start}: 0;
+                margin: 0;
+            }
+            .dropdown-menu {
+                width: 100%;
             }
         }
     }
